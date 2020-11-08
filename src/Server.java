@@ -1,52 +1,75 @@
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class Server {
+public class Server implements Runnable {
 
-    private static final int LISTENING_PORT = 7734;
     private static final int CORE_POOL_SIZE = 5;
     private static final int MAX_POOL_SIZE = 10;
     private static final int QUEUE_CAPACITY = 100;
     private static final Long KEEP_ALIVE_TIME = 1L;
-    private final ServerSocket serverSocket;
-    private final ThreadPoolExecutor executor;
+    private int SERVER_PORT = 7734;
     private boolean isStopped = false;
-    private final ServerData serverData = new ServerData();
+    private ServerSocket serverSocket = null;
+    private ThreadPoolExecutor threadPool = null;
+    private ServerData serverData = null;
 
-    public Server() throws IOException {
-        this.serverSocket = new ServerSocket(LISTENING_PORT);
-        this.executor = new ThreadPoolExecutor(
+    public Server() {}
+
+    public Server(int port) {
+        this.SERVER_PORT = port;
+    }
+
+    public void run() {
+        initServer();
+        while (!isStopped) {
+            try {
+                Socket socket = serverSocket.accept();
+                threadPool.execute(new ServerHandleRequest(socket, serverData));
+            } catch (IOException e) {
+                if (isStopped) {
+                    System.out.println("Server stopped");
+                    break;
+                }
+                throw new RuntimeException("Error accepting new connections", e);
+            }
+        }
+        threadPool.shutdown();
+        System.out.println("Server stopped");
+    }
+
+    public synchronized boolean isStopped() {
+        return isStopped;
+    }
+
+    public synchronized void stop() {
+        isStopped = true;
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            throw new RuntimeException("Error closing server socket", e);
+        }
+        System.out.println("Server socket closed");
+    }
+
+    private void initServer() {
+        this.isStopped = false;
+        this.threadPool = new ThreadPoolExecutor(
                 CORE_POOL_SIZE,
                 MAX_POOL_SIZE,
                 KEEP_ALIVE_TIME,
                 TimeUnit.SECONDS,
                 new ArrayBlockingQueue<>(QUEUE_CAPACITY),
                 new ThreadPoolExecutor.CallerRunsPolicy());
-    }
+        this.serverData = new ServerData();
 
-    public void run() {
-        while (!isStopped) {
-            try {
-                Socket socket = serverSocket.accept();
-                executor.execute(new ServerHandleRequestThread(socket, serverData));
-            } catch (IOException e) {
-                System.out.println("I/O error " + e);
-            }
+        try {
+            this.serverSocket =  new ServerSocket(SERVER_PORT);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot open port " + SERVER_PORT, e);
         }
-    }
-
-    public void stop() throws IOException {
-        isStopped = true;
-        serverSocket.close();
-        System.out.println("Socket closed");
-        executor.shutdown();
-        while (!executor.isTerminated()) {}
-        System.out.println("Finished all threads");
     }
 }
