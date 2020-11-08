@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -12,10 +14,10 @@ public class Server {
     private static final int MAX_POOL_SIZE = 10;
     private static final int QUEUE_CAPACITY = 100;
     private static final Long KEEP_ALIVE_TIME = 1L;
-    private ServerSocket serverSocket;
-    private Socket socket;
-    private ThreadPoolExecutor executor;
+    private final ServerSocket serverSocket;
+    private final ThreadPoolExecutor executor;
     private boolean isStopped = false;
+    private final ServerData serverData = new ServerData();
 
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(LISTENING_PORT);
@@ -31,8 +33,8 @@ public class Server {
     public void run() {
         while (!isStopped) {
             try {
-                socket = serverSocket.accept();
-                executor.execute(new ServerHandleRequestThread(socket));
+                Socket socket = serverSocket.accept();
+                executor.execute(new ServerHandleRequestThread(socket, serverData));
             } catch (IOException e) {
                 System.out.println("I/O error " + e);
             }
