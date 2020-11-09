@@ -5,6 +5,14 @@ import java.util.HashMap;
 
 /*
     Peer to peer/Peer to server protocol parser
+
+    Protocol format:
+    Request-Line <cr> <lf>
+    header field name: <sp> value <cr> <lf>
+    header field name: <sp> value <cr> <lf>...
+    <cr> <lf>
+    Message-Body
+    <cr> <lf>
  */
 public class ProtocolParser {
     private String requestLine;
