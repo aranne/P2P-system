@@ -37,10 +37,10 @@ public class ServerData {
         }
     }
 
-    public void addRFCIndex(RFC rfc, PeerInfo peerInfo) {
+    public void addRFCIndex(RFCIndex rfcIndex) {
         w.lock();
         try {
-            rfcIndices.add(new RFCIndex(rfc.getRFCNum(), rfc.getTitle(), peerInfo.getHostname()));
+            rfcIndices.add(rfcIndex);
         } finally {
             w.unlock();
         }
