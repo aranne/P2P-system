@@ -2,6 +2,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ import java.util.Map;
     RFC number <sp> RFC title <sp> hostname <sp> upload port number<cr><lf> ...
     <cr> <lf>
  */
-public class ProtocolGenerator {
+public class MessageGenerator {
     enum Method {
         GET,
         ADD,
@@ -30,22 +31,22 @@ public class ProtocolGenerator {
     private static final String VERSION = "P2P-CI/1.0";
     private static final String CRLF = "\r\n";
 
-    public static void generateRequest(OutputStream out, Method method, Map<String, String> headers) throws ProtocolFormatException, IOException {
+    public static void generateRequest(OutputStream out, Method method, LinkedHashMap<String, String> headers) throws MessageFormatException, IOException {
         if (method == Method.LIST) {
             generateRequest(out, method, -1, headers);
         } else {
-            throw new ProtocolFormatException("Not supported method: " + method);
+            throw new MessageFormatException("Not supported method: " + method);
         }
     }
 
-    public static void generateRequest(OutputStream out, Method method, int RFCNum, Map<String, String> headers) throws ProtocolFormatException, IOException {
+    public static void generateRequest(OutputStream out, Method method, int RFCNum, LinkedHashMap<String, String> headers) throws MessageFormatException, IOException {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
         if (method == Method.LIST) {
             bw.write(method.toString() + " RFC ALL " + VERSION + CRLF);
         } else if (method == Method.GET || method == Method.ADD || method == Method.LOOKUP) {
             bw.write(method.toString() + " RFC " + RFCNum + " " + VERSION + CRLF);
         } else {
-            throw new ProtocolFormatException("Not supported method: " + method);
+            throw new MessageFormatException("Not supported method: " + method);
         }
         for (String header : headers.keySet()) {
             bw.write(header + ": " + headers.get(header) + CRLF);
@@ -54,7 +55,7 @@ public class ProtocolGenerator {
         bw.flush();
     }
 
-    public static void generateResponse(OutputStream out, int statusCode, String status, Map<String, String> headers, Path file) throws IOException {
+    public static void generateResponse(OutputStream out, int statusCode, String status, LinkedHashMap<String, String> headers, Path file) throws IOException {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
         bw.write(VERSION + " " + statusCode + " " + status + CRLF);
         for (String header : headers.keySet()) {
