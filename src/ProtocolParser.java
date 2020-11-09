@@ -20,23 +20,24 @@ public class ProtocolParser {
     private StringBuilder messageBody;
 
     public void parseRequest(String request) throws ProtocolFormatException, IOException {
-        BufferedReader reader = new BufferedReader(new StringReader(request));
+        System.out.println(request);
+        BufferedReader br = new BufferedReader(new StringReader(request));
 
         headers = new HashMap<>();
         messageBody = new StringBuilder();
 
-        setRequestLine(reader.readLine());    // Request-Line
+        setRequestLine(br.readLine());    // Request-Line
 
-        String header = reader.readLine();
+        String header = br.readLine();
         while (header.length() > 0) {         // reads until \r\n
             appendHeader(header);
-            header = reader.readLine();
+            header = br.readLine();
         }
 
-        String bodyLine = reader.readLine();
+        String bodyLine = br.readLine();
         while (bodyLine != null) {            // reads until EOF
             appendMessageBody(bodyLine);      // if reads \r\n, bodyLine will be empty string, this will append \r\n
-            bodyLine = reader.readLine();
+            bodyLine = br.readLine();
         }
     }
 
