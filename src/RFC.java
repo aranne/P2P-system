@@ -14,4 +14,12 @@ public class RFC {
     public String getTitle() {
         return title;
     }
+
+    @Override
+    public String toString() {
+        return "RFC{" +
+                "RFCNum=" + RFCNum +
+                ", title='" + title + '\'' +
+                '}';
+    }
 }
