@@ -11,7 +11,7 @@ public class Server {
     private static final int MAX_POOL_SIZE = 10;
     private static final int QUEUE_CAPACITY = 100;
     private static final Long KEEP_ALIVE_TIME = 1L;
-    private int SERVER_PORT = 7734;
+    private int serverPort = 7734;
     private boolean isStopped = false;
     private ServerSocket serverSocket = null;
     private ThreadPoolExecutor threadPool = null;
@@ -20,7 +20,7 @@ public class Server {
     public Server() {}
 
     public Server(int port) {
-        this.SERVER_PORT = port;
+        this.serverPort = port;
     }
 
     public void start() {
@@ -28,7 +28,7 @@ public class Server {
         while (!isStopped) {
             try {
                 Socket socket = serverSocket.accept();
-                System.out.println("New connection established " + socket.getInetAddress().getHostName());
+                System.out.println("New connection established with " + socket.getLocalAddress().getHostName());
                 threadPool.execute(new ServerHandleRequest(socket, serverData));
             } catch (IOException e) {
                 if (isStopped) {
@@ -68,10 +68,10 @@ public class Server {
         this.serverData = new ServerData();
 
         try {
-            this.serverSocket =  new ServerSocket(SERVER_PORT);
+            this.serverSocket =  new ServerSocket(serverPort);
         } catch (IOException e) {
-            throw new RuntimeException("Cannot open port " + SERVER_PORT, e);
+            throw new RuntimeException("Cannot open port " + serverPort, e);
         }
-        System.out.println("Server is listening on port " + SERVER_PORT);
+        System.out.println("Server is listening on port " + serverPort);
     }
 }
