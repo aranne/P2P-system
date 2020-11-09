@@ -22,7 +22,14 @@ public class ServerData {
     public void addPeerInfo(PeerInfo peerInfo)  {
         w.lock();
         try {
-            peerInfos.add(peerInfo);
+            boolean find = false;
+            for (PeerInfo peer : peerInfos) {
+                if (peer.hostname.equals(peerInfo.hostname) && peer.listeningPort == peerInfo.listeningPort) {
+                    find = true;
+                    break;
+                }
+            }
+            if (!find) peerInfos.add(peerInfo);
         } finally {
             w.unlock();
         }
