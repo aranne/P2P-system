@@ -5,7 +5,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class Server implements Runnable {
+public class Server {
 
     private static final int CORE_POOL_SIZE = 5;
     private static final int MAX_POOL_SIZE = 10;
@@ -23,11 +23,12 @@ public class Server implements Runnable {
         this.SERVER_PORT = port;
     }
 
-    public void run() {
+    public void start() {
         initServer();
         while (!isStopped) {
             try {
                 Socket socket = serverSocket.accept();
+                System.out.println("New connection established " + socket.getInetAddress().getHostName());
                 threadPool.execute(new ServerHandleRequest(socket, serverData));
             } catch (IOException e) {
                 if (isStopped) {
@@ -41,11 +42,11 @@ public class Server implements Runnable {
         System.out.println("Server stopped");
     }
 
-    public synchronized boolean isStopped() {
+    public boolean isStopped() {
         return isStopped;
     }
 
-    public synchronized void stop() {
+    public void stop() {
         isStopped = true;
         try {
             serverSocket.close();
@@ -71,5 +72,6 @@ public class Server implements Runnable {
         } catch (IOException e) {
             throw new RuntimeException("Cannot open port " + SERVER_PORT, e);
         }
+        System.out.println("Server is listening on port " + SERVER_PORT);
     }
 }
