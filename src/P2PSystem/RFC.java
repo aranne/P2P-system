@@ -1,3 +1,5 @@
+package P2PSystem;
+
 public class RFC {
     private int RFCNum;
     private String title;
@@ -17,7 +19,7 @@ public class RFC {
 
     @Override
     public String toString() {
-        return "RFC{" +
+        return "P2PSystem.RFC{" +
                 "RFCNum=" + RFCNum +
                 ", title='" + title + '\'' +
                 '}';

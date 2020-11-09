@@ -1,3 +1,5 @@
+package P2PSystem;
+
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -6,14 +8,14 @@ import java.util.LinkedHashMap;
 public class ClientHandler implements Runnable {
 
     private final Socket socket;
-    private final ServerData serverData;
+    private final CentralServerData centralServerData;
     private final String LOCAL_HOSTNAME;
-    private ServerData.PeerInfo currentPeer = null;
+    private CentralServerData.PeerInfo currentPeer = null;
 
-    public ClientHandler(Socket clientSocket, ServerData serverData) {
+    public ClientHandler(Socket clientSocket, CentralServerData centralServerData) {
         this.socket = clientSocket;
-        this.serverData = serverData;
-        LOCAL_HOSTNAME = clientSocket.getLocalAddress().getHostName();
+        this.centralServerData = centralServerData;
+        this.LOCAL_HOSTNAME = clientSocket.getLocalAddress().getHostName();
     }
 
     @Override
@@ -29,8 +31,8 @@ public class ClientHandler implements Runnable {
                 if (line.length() == 0) {            // end of a single request
                     System.out.println("Get new message from client " + LOCAL_HOSTNAME + ": \n");
                     MessageParser.Message message = parser.parseRequest(sb.toString());
-                    sb.setLength(0);
                     handleMessage(message);
+                    sb.setLength(0);
                 }
             }
             in.close();
@@ -40,8 +42,8 @@ public class ClientHandler implements Runnable {
         } finally {
             System.out.println("Socket is closed with: " + LOCAL_HOSTNAME);
             if (currentPeer != null) {
-                serverData.removePeerInfo(currentPeer);
-                serverData.removeRFCIndices(currentPeer);
+                centralServerData.removePeerInfo(currentPeer);
+                centralServerData.removeRFCIndices(currentPeer);
             }
         }
     }
@@ -61,8 +63,8 @@ public class ClientHandler implements Runnable {
         String title = headers.getOrDefault("Title", "");
         switch (method) {
             case ADD:
-                ServerData.RFCIndex rfcIndex = new ServerData.RFCIndex(RFCNum, title, hostName);
-                currentPeer = new ServerData.PeerInfo(hostName, uploadPort);
+                CentralServerData.RFCIndex rfcIndex = new CentralServerData.RFCIndex(RFCNum, title, hostName);
+                currentPeer = new CentralServerData.PeerInfo(hostName, uploadPort);
                 handleAdd(currentPeer, rfcIndex);
                 break;
             case LOOKUP:
@@ -72,9 +74,9 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    private void handleAdd(ServerData.PeerInfo currentPeer, ServerData.RFCIndex rfcIndex) {
-        serverData.addPeerInfo(currentPeer);
-        serverData.addRFCIndex(rfcIndex);
-        System.out.println("DEBUG "+serverData);
+    private void handleAdd(CentralServerData.PeerInfo currentPeer, CentralServerData.RFCIndex rfcIndex) {
+        centralServerData.addPeerInfo(currentPeer);
+        centralServerData.addRFCIndex(rfcIndex);
+        System.out.println("DEBUG "+ centralServerData);
     }
 }

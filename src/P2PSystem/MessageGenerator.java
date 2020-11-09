@@ -1,24 +1,25 @@
+package P2PSystem;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /*
-    Peer to Server Protocol
+    Peer to P2PSystem.Server Protocol
 
     Request:
-    method <sp> RFC number <sp> version <cr> <lf> header field name <sp> value <cr> <lf>
+    method <sp> P2PSystem.RFC number <sp> version <cr> <lf> header field name <sp> value <cr> <lf>
     header field name <sp> value <cr> <lf>
     <cr> <lf>
 
     Response:
     version <sp> status code <sp> phrase <cr> <lf>
     <cr> <lf>
-    RFC number <sp> RFC title <sp> hostname <sp> upload port number<cr><lf>
-    RFC number <sp> RFC title <sp> hostname <sp> upload port number<cr><lf> ...
+    P2PSystem.RFC number <sp> P2PSystem.RFC title <sp> hostname <sp> upload port number<cr><lf>
+    P2PSystem.RFC number <sp> P2PSystem.RFC title <sp> hostname <sp> upload port number<cr><lf> ...
     <cr> <lf>
  */
 public class MessageGenerator {
@@ -42,9 +43,9 @@ public class MessageGenerator {
     public static void generateRequest(OutputStream out, Method method, int RFCNum, LinkedHashMap<String, String> headers) throws MessageFormatException, IOException {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
         if (method == Method.LIST) {
-            bw.write(method.toString() + " RFC ALL " + VERSION + CRLF);
+            bw.write(method.toString() + " P2PSystem.RFC ALL " + VERSION + CRLF);
         } else if (method == Method.GET || method == Method.ADD || method == Method.LOOKUP) {
-            bw.write(method.toString() + " RFC " + RFCNum + " " + VERSION + CRLF);
+            bw.write(method.toString() + " P2PSystem.RFC " + RFCNum + " " + VERSION + CRLF);
         } else {
             throw new MessageFormatException("Not supported method: " + method);
         }

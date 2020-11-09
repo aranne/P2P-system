@@ -1,8 +1,9 @@
+package P2PSystem;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 /*
     Peer to peer/Peer to server protocol parser
@@ -18,7 +19,7 @@ import java.util.Map;
 public class MessageParser {
     public static class Message {
         String requestLine;
-        Map<String, String> headers;
+        LinkedHashMap<String, String> headers;
         StringBuilder messageBody;
         public Message() {
             headers = new LinkedHashMap<>();

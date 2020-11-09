@@ -1,9 +1,11 @@
+package P2PSystem;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class ServerData {
+public class CentralServerData {
 
     private final List<PeerInfo> peerInfos = new ArrayList<>();
     private final List<RFCIndex> rfcIndices = new ArrayList<>();
@@ -11,20 +13,12 @@ public class ServerData {
     private final Lock r = rwl.readLock();
     private final Lock w = rwl.writeLock();
 
-    public List<PeerInfo> getPeerInfos() {
-        return peerInfos;
-    }
-
-    public List<RFCIndex> getRfcIndices() {
-        return rfcIndices;
-    }
-
     public void addPeerInfo(PeerInfo peerInfo)  {
         w.lock();
         try {
             boolean find = false;
             for (PeerInfo peer : peerInfos) {
-                if (peer.hostname.equals(peerInfo.hostname) && peer.listeningPort == peerInfo.listeningPort) {
+                if (peer.hostname.equals(peerInfo.hostname)) {
                     find = true;
                     break;
                 }
