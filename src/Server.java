@@ -29,7 +29,7 @@ public class Server {
             try {
                 Socket socket = serverSocket.accept();
                 System.out.println("New connection established with " + socket.getLocalAddress().getHostName());
-                threadPool.execute(new ServerHandleRequest(socket, serverData));
+                threadPool.execute(new ClientHandler(socket, serverData));
             } catch (IOException e) {
                 if (isStopped) {
                     System.out.println("Server stopped");
