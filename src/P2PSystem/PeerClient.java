@@ -1,8 +1,8 @@
 package P2PSystem;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 
 public class PeerClient {
@@ -31,8 +31,11 @@ public class PeerClient {
         new Thread(peerServer).start();                           //  running peer server on another thread
         try {
             Socket socket = new Socket(SERVER_HOSTNAME, SERVER_PORT);
+            System.out.println("Connected to server " + socket.getInetAddress().getHostName());
             out = socket.getOutputStream();
             LOCAL_HOSTNAME = socket.getLocalAddress().getHostName();
+            InputStream in = socket.getInputStream();
+            new Thread(new PeerClientReadingThread(in)).start();  // running reading thread for response from server
         } catch (IOException e) {
             throw new RuntimeException("Cannot connect to server at " + SERVER_HOSTNAME + " on port " + SERVER_PORT);
         }
@@ -40,6 +43,11 @@ public class PeerClient {
 
     public void stop() {
         isStopped = true;
+        try {
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean addRFC(RFC rfc) {
