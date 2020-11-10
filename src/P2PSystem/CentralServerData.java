@@ -8,7 +8,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class CentralServerData {
 
     private final List<PeerInfo> peerInfos = new ArrayList<>();
-    private final List<RFCIndex> rfcIndices = new ArrayList<>();
+    private final List<RFCIndex> RFCIndices = new ArrayList<>();
     private final ReentrantReadWriteLock rwl = new ReentrantReadWriteLock();
     private final Lock r = rwl.readLock();
     private final Lock w = rwl.writeLock();
@@ -41,7 +41,7 @@ public class CentralServerData {
     public void addRFCIndex(RFCIndex rfcIndex) {
         w.lock();
         try {
-            rfcIndices.add(rfcIndex);
+            RFCIndices.add(rfcIndex);
         } finally {
             w.unlock();
         }
@@ -50,9 +50,24 @@ public class CentralServerData {
     public void removeRFCIndices(PeerInfo peerInfo) {
         w.lock();
         try {
-            rfcIndices.removeIf(rfc -> rfc.getHostname().equals(peerInfo.getHostname()));
+            RFCIndices.removeIf(rfc -> rfc.getHostname().equals(peerInfo.getHostname()));
         } finally {
             w.unlock();
+        }
+    }
+
+    public List<RFCIndex> lookupRFCIndices(RFC rfc) {
+        List<RFCIndex> res = new ArrayList<>();
+        r.lock();
+        try {
+            for (RFCIndex rfcIndex : RFCIndices) {
+                if (rfcIndex.RFCNum == rfc.getRFCNum() && rfcIndex.title.equals(rfc.getTitle())) {
+                    res.add(rfcIndex);
+                }
+            }
+            return res;
+        } finally {
+            r.unlock();
         }
     }
 
@@ -60,7 +75,7 @@ public class CentralServerData {
     public String toString() {
         return "ServerData{" +
                 "peerInfos=" + peerInfos +
-                ", rfcIndices=" + rfcIndices +
+                ", rfcIndices=" + RFCIndices +
                 '}';
     }
 
@@ -68,26 +83,26 @@ public class CentralServerData {
 
     public static class PeerInfo {
         private String hostname;
-        private int listeningPort;
+        private int uploadPort;
 
-        public PeerInfo(String hostname, int listeningPort) {
+        public PeerInfo(String hostname, int uploadPort) {
             this.hostname = hostname;
-            this.listeningPort = listeningPort;
+            this.uploadPort = uploadPort;
         }
 
         public String getHostname() {
             return hostname;
         }
 
-        public int getListeningPort() {
-            return listeningPort;
+        public int getUploadPort() {
+            return uploadPort;
         }
 
         @Override
         public String toString() {
             return "ServerData.PeerInfo{" +
                     "hostname='" + hostname + '\'' +
-                    ", listeningPort=" + listeningPort +
+                    ", listeningPort=" + uploadPort +
                     '}';
         }
     }
