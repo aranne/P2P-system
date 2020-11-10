@@ -43,7 +43,12 @@ public class Server implements Runnable {
     }
 
     public void run() {
-        initServer();
+        try {
+            initServer();
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
         while (!isStopped) {
             try {
                 Socket socket = serverSocket.accept();
@@ -51,7 +56,7 @@ public class Server implements Runnable {
                 if (serverType == Type.CENTRAL_SERVER) {
                     threadPool.execute(new ClientHandler(socket, centralServerData));
                 } else {
-                    threadPool.execute(new PeerHandler(socket, peerServerData));
+                    threadPool.execute(new ClientHandler(socket, peerServerData));
                 }
             } catch (IOException e) {
                 if (isStopped) {
@@ -105,7 +110,7 @@ public class Server implements Runnable {
         try {
             this.serverSocket =  new ServerSocket(serverPort);
         } catch (IOException e) {
-            throw new RuntimeException("Cannot open server on port " + serverPort, e);
+            throw new RuntimeException("Cannot open server on port " + serverPort);
         }
         System.out.println(listeningMsg[serverType.getValue()] + serverPort);
     }
