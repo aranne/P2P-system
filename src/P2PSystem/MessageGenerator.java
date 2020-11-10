@@ -73,11 +73,14 @@ public class MessageGenerator {
     public static void generateResponse(OutputStream out, int statusCode, String status, List<String> RFCRecords) throws IOException {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
         bw.write(VERSION + " " + statusCode + " " + status + CRLF);
-        bw.write(CRLF);
         for (String RFCRecord : RFCRecords) {
             bw.write(RFCRecord + CRLF);
         }
         bw.write(CRLF);
         bw.flush();
+    }
+
+    public static String generateRFCResponseFormat(int RFCNum, String title, String hostname, int uploadPort) {
+        return "RFC " + RFCNum + " " + title + " " + hostname + " " + uploadPort;
     }
 }
