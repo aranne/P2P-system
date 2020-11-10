@@ -7,7 +7,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class PeerServerData {
 
-    private final List<RFC> rfcList = new ArrayList<>();
+    private final List<RFC> RFCList = new ArrayList<>();
     private final ReentrantReadWriteLock rwl = new ReentrantReadWriteLock();
     private final Lock r = rwl.readLock();
     private final Lock w = rwl.writeLock();
@@ -15,7 +15,7 @@ public class PeerServerData {
     public void addRFC(RFC rfc) {
         w.lock();
         try {
-            rfcList.add(rfc);
+            RFCList.add(rfc);
         } finally {
             w.unlock();
         }
@@ -24,7 +24,7 @@ public class PeerServerData {
     public RFC getRFC(int RFCNum) {
         r.lock();
         try {
-            for (RFC rfc : rfcList) {
+            for (RFC rfc : RFCList) {
                 if (rfc.getRFCNum() == RFCNum) return rfc;
             }
             return null;
@@ -36,9 +36,18 @@ public class PeerServerData {
     public void removeRFC(RFC rfc) {
         w.lock();
         try {
-            rfcList.removeIf(RFC -> RFC.getRFCNum() == rfc.getRFCNum() && RFC.getTitle().equals(rfc.getTitle()));
+            RFCList.removeIf(RFC -> RFC.getRFCNum() == rfc.getRFCNum() && RFC.getTitle().equals(rfc.getTitle()));
         } finally {
             w.unlock();
+        }
+    }
+
+    public List<RFC> getAllRFCs() {
+        r.lock();
+        try {
+            return RFCList;
+        } finally {
+            r.unlock();
         }
     }
 }
