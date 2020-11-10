@@ -38,6 +38,18 @@ public class CentralServerData {
         }
     }
 
+    public PeerInfo getPeerInfo(String hostname) {
+        r.lock();
+        try {
+            for (PeerInfo peer : peerInfos) {
+                if (peer.getHostname().equals(hostname)) return peer;
+            }
+            return null;
+        } finally {
+            r.unlock();
+        }
+    }
+
     public void addRFCIndex(RFCIndex rfcIndex) {
         w.lock();
         try {
