@@ -2,7 +2,6 @@ package P2PSystem;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 
 public class PeerClient {
@@ -35,7 +34,7 @@ public class PeerClient {
             out = socket.getOutputStream();
             LOCAL_HOSTNAME = socket.getLocalAddress().getHostName();
             InputStream in = socket.getInputStream();
-            new Thread(new PeerClientReadingThread(in)).start();  // running reading thread for response from server
+            new Thread(new ServerResponseHandler(in)).start();  // running reading thread for response from server
         } catch (IOException e) {
             throw new RuntimeException("Cannot connect to server at " + SERVER_HOSTNAME + " on port " + SERVER_PORT);
         }
@@ -75,6 +74,24 @@ public class PeerClient {
         }
     }
 
+    public boolean uploadAllRFCs() {
+        PeerServerData peerServerData = peerServer.getPeerServerData();
+        if (peerServerData == null) return false;
+        for (RFC rfc : peerServerData.getAllRFCs()) {
+            LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+            headers.put("Host", LOCAL_HOSTNAME);
+            headers.put("Port", String.valueOf(UPLOAD_LOCAL_PORT));
+            headers.put("Title", rfc.getTitle());
+            try {
+                MessageGenerator.generateRequest(out, MessageGenerator.Method.ADD, rfc.getRFCNum(), headers);
+            } catch (MessageFormatException | IOException e) {
+                System.out.println("Error uploading RFCs");
+                return false;
+            }
+        }
+        return true;
+    }
+
     public boolean listRFCs() {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Host", LOCAL_HOSTNAME);
@@ -97,7 +114,25 @@ public class PeerClient {
             MessageGenerator.generateRequest(out, MessageGenerator.Method.LOOKUP, RFCNum, headers);
             return true;
         } catch (MessageFormatException | IOException e) {
-            System.out.println("Error in lookup RFC " + RFCNum + " with title " + title);
+            System.out.println("Error lookup RFC " + RFCNum + " with title " + title);
+            return false;
+        }
+    }
+
+    public boolean getRFC(int RFCNum, String hostname, int uploadingPort) {
+        try {
+            Socket socket = new Socket(hostname, uploadingPort);
+            System.out.println("Connected to client " + hostname);
+            OutputStream out = socket.getOutputStream();
+            InputStream in = socket.getInputStream();
+            new Thread(new PeerResponseHandler(in)).start();      // get response from other peer
+            LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+            headers.put("Host", LOCAL_HOSTNAME);
+            headers.put("OS", System.getProperty("os.name"));
+            MessageGenerator.generateRequest(out, MessageGenerator.Method.GET, RFCNum, headers);
+            return true;
+        } catch (IOException | MessageFormatException e) {
+            System.out.println("Error download RFC from client " + hostname + " at port " + uploadingPort);
             return false;
         }
     }
