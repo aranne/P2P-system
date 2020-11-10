@@ -43,7 +43,7 @@ public class MessageGenerator {
     public static void generateRequest(OutputStream out, Method method, int RFCNum, LinkedHashMap<String, String> headers) throws MessageFormatException, IOException {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
         if (method == Method.LIST) {
-            bw.write(method.toString() + " RFC ALL " + VERSION + CRLF);
+            bw.write(method.toString() + " ALL " + VERSION + CRLF);
         } else if (method == Method.GET || method == Method.ADD || method == Method.LOOKUP) {
             bw.write(method.toString() + " RFC " + RFCNum + " " + VERSION + CRLF);
         } else {
