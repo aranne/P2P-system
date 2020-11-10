@@ -37,10 +37,10 @@ public class ClientHandler implements Runnable {
             }
             in.close();
             socket.close();
+            System.out.println("Socket is closed with: " + LOCAL_HOSTNAME);
         } catch (IOException | MessageFormatException e) {
             System.out.println("IO Error in server thread");
         } finally {
-            System.out.println("Socket is closed with: " + LOCAL_HOSTNAME);
             if (currentPeer != null) {
                 centralServerData.removePeerInfo(currentPeer);
                 centralServerData.removeRFCIndices(currentPeer);

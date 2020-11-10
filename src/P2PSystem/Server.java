@@ -76,7 +76,7 @@ public class Server implements Runnable {
         } catch (IOException e) {
             throw new RuntimeException("Error closing server socket", e);
         }
-        System.out.println("P2PSystem.Server socket closed");
+        System.out.println("Server socket closed");
     }
 
     public CentralServerData getCentralServerData() {
