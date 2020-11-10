@@ -12,6 +12,7 @@ public class ClientPage extends BasePage implements PageView {
         menu.add("Add a new RFC");
         menu.add("Look up a certain RFC");
         menu.add("List all available RFC");
+        menu.add("Download a new RFC");
         menu.add("Leave P2P System");
         pageTitle = "==================== Client =====================";
         choicePrompt = "Please input your choice:";
@@ -30,13 +31,15 @@ public class ClientPage extends BasePage implements PageView {
                     new AddRFCPage().display();
                     break;
                 case 3:
-                    new LookUpPage().display();
+                    new LookupRFCPage().display();
                     break;
                 case 4:
                     new ListRFCPage().display();
                     break;
                 case 5:
-
+                    new GetRFCPage().display();
+                    break;
+                case 6:
             }
         }
     }

@@ -4,8 +4,8 @@ import P2PSystem.P2PSystemClient;
 import Pages.BasePage;
 import Pages.PageView;
 
-public class LookUpPage extends BasePage implements PageView {
-    public LookUpPage() {
+public class LookupRFCPage extends BasePage implements PageView {
+    public LookupRFCPage() {
         super();
         menu.add("Look up");
         menu.add("Go back");

@@ -8,6 +8,7 @@ public class ListRFCPage extends BasePage implements PageView {
     public ListRFCPage() {
         super();
         pageTitle = "==================== ALL RFCs ====================";
+        choicePrompt = "Please wait for response";
     }
 
     @Override
