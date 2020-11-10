@@ -71,6 +71,15 @@ public class CentralServerData {
         }
     }
 
+    public List<RFCIndex> listRFCIndices() {
+        r.lock();
+        try {
+            return RFCIndices;
+        } finally {
+            r.unlock();
+        }
+    }
+
     @Override
     public String toString() {
         return "ServerData{" +

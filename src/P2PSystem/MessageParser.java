@@ -29,6 +29,7 @@ public class MessageParser {
 
     public Message parseRequest(String request) throws MessageFormatException, IOException {
         System.out.println(request);
+
         BufferedReader br = new BufferedReader(new StringReader(request));
         Message message = new Message();
 
