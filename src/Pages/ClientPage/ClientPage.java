@@ -29,6 +29,14 @@ public class ClientPage extends BasePage implements PageView {
                 case 2:
                     new AddRFCPage().display();
                     break;
+                case 3:
+                    new LookUpPage().display();
+                    break;
+                case 4:
+                    new ListRFCPage().display();
+                    break;
+                case 5:
+
             }
         }
     }
