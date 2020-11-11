@@ -57,7 +57,7 @@ Obsoletes: None
 
 Kampe                                                           [Page 1]
 
-RFC 162                        NETBUGGER3                       May 1971
+P2PSystem.RFC 162                        NETBUGGER3                       May 1971
 
 
    Then, later on when the other server Host is up, NETBUGGER3 can be
@@ -72,8 +72,8 @@ RFC 162                        NETBUGGER3                       May 1971
    NETBUGGER3, please contact the Network liaison at UCLA - NMC.
 
 
-       [ This RFC was put into machine readable form for entry ]
-       [ into the online RFC archives by Alison De La Cruz 12/00]
+       [ This P2PSystem.RFC was put into machine readable form for entry ]
+       [ into the online P2PSystem.RFC archives by Alison De La Cruz 12/00]
 
 
 

@@ -4,22 +4,23 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
-public class PeerClientReadingThread implements Runnable {
+public class ServerResponseHandler implements Runnable {
 
-    InputStream in;
+    Socket socket;
 
-    public PeerClientReadingThread(InputStream in) {
-        this.in = in;
+    public ServerResponseHandler(Socket socket) {
+        this.socket = socket;
     }
 
     @Override
     public void run() {
-        BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
         StringBuilder sb = new StringBuilder();
         String line;
-        try {
+        try (InputStream in = socket.getInputStream()) {
+            BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
             while ((line = br.readLine()) != null) { // end of stream
                 sb.append(line).append("\r\n");
                 if (line.length() == 0) {
@@ -28,11 +29,8 @@ public class PeerClientReadingThread implements Runnable {
                     sb.setLength(0);
                 }
             }
-            in.close();
-            System.out.println("Connection to central server is closed");
         } catch (IOException e) {
             System.out.println("Error receiving response from central server");
         }
-
     }
 }

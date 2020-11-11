@@ -57,7 +57,7 @@ Preface
 
 Krilanovich                                                     [Page 1]
 
-RFC 119               Network Fortran Subprograms         April 21, 1971
+P2PSystem.RFC 119               Network Fortran Subprograms         April 21, 1971
 
 
    A set of assembly-language written subprograms is provided to
@@ -113,7 +113,7 @@ RFC 119               Network Fortran Subprograms         April 21, 1971
 
 Krilanovich                                                     [Page 2]
 
-RFC 119               Network Fortran Subprograms         April 21, 1971
+P2PSystem.RFC 119               Network Fortran Subprograms         April 21, 1971
 
 
        (A) CONNECT
@@ -169,7 +169,7 @@ RFC 119               Network Fortran Subprograms         April 21, 1971
 
 Krilanovich                                                     [Page 3]
 
-RFC 119               Network Fortran Subprograms         April 21, 1971
+P2PSystem.RFC 119               Network Fortran Subprograms         April 21, 1971
 
 
                     16, Local resources are insufficient to support
@@ -225,7 +225,7 @@ RFC 119               Network Fortran Subprograms         April 21, 1971
 
 Krilanovich                                                     [Page 4]
 
-RFC 119               Network Fortran Subprograms         April 21, 1971
+P2PSystem.RFC 119               Network Fortran Subprograms         April 21, 1971
 
 
                 'time' is the length of time the subprogram is to wait
@@ -281,7 +281,7 @@ RFC 119               Network Fortran Subprograms         April 21, 1971
 
 Krilanovich                                                     [Page 5]
 
-RFC 119               Network Fortran Subprograms         April 21, 1971
+P2PSystem.RFC 119               Network Fortran Subprograms         April 21, 1971
 
 
            only when the last operation referencing the local socket was
@@ -337,7 +337,7 @@ RFC 119               Network Fortran Subprograms         April 21, 1971
 
 Krilanovich                                                     [Page 6]
 
-RFC 119               Network Fortran Subprograms         April 21, 1971
+P2PSystem.RFC 119               Network Fortran Subprograms         April 21, 1971
 
 
           The calling sequence is as follows:
@@ -393,7 +393,7 @@ RFC 119               Network Fortran Subprograms         April 21, 1971
 
 Krilanovich                                                     [Page 7]
 
-RFC 119               Network Fortran Subprograms         April 21, 1971
+P2PSystem.RFC 119               Network Fortran Subprograms         April 21, 1971
 
 
                     44, By operator command, all Network operations were
@@ -449,7 +449,7 @@ RFC 119               Network Fortran Subprograms         April 21, 1971
 
 Krilanovich                                                     [Page 8]
 
-RFC 119               Network Fortran Subprograms         April 21, 1971
+P2PSystem.RFC 119               Network Fortran Subprograms         April 21, 1971
 
 
                      8, The specified completion code variable is not
@@ -505,7 +505,7 @@ RFC 119               Network Fortran Subprograms         April 21, 1971
 
 Krilanovich                                                     [Page 9]
 
-RFC 119               Network Fortran Subprograms         April 21, 1971
+P2PSystem.RFC 119               Network Fortran Subprograms         April 21, 1971
 
 
        Where
@@ -561,7 +561,7 @@ RFC 119               Network Fortran Subprograms         April 21, 1971
 
 Krilanovich                                                    [Page 10]
 
-RFC 119               Network Fortran Subprograms         April 21, 1971
+P2PSystem.RFC 119               Network Fortran Subprograms         April 21, 1971
 
 
                     44, By operator command, all network operations were
@@ -617,7 +617,7 @@ RFC 119               Network Fortran Subprograms         April 21, 1971
 
 Krilanovich                                                    [Page 11]
 
-RFC 119               Network Fortran Subprograms         April 21, 1971
+P2PSystem.RFC 119               Network Fortran Subprograms         April 21, 1971
 
 
    'STAT'    'MNEM'         MEANING
@@ -673,7 +673,7 @@ RFC 119               Network Fortran Subprograms         April 21, 1971
 
 Krilanovich                                                    [Page 12]
 
-RFC 119               Network Fortran Subprograms         April 21, 1971
+P2PSystem.RFC 119               Network Fortran Subprograms         April 21, 1971
 
 
     10       DRAIN-->      The local socket has issued a CLOSE.  The NCP
@@ -729,7 +729,7 @@ RFC 119               Network Fortran Subprograms         April 21, 1971
 
 Krilanovich                                                    [Page 13]
 
-RFC 119               Network Fortran Subprograms         April 21, 1971
+P2PSystem.RFC 119               Network Fortran Subprograms         April 21, 1971
 
 
          The following completion codes are possible for this operation:
@@ -785,7 +785,7 @@ RFC 119               Network Fortran Subprograms         April 21, 1971
 
 Krilanovich                                                    [Page 14]
 
-RFC 119               Network Fortran Subprograms         April 21, 1971
+P2PSystem.RFC 119               Network Fortran Subprograms         April 21, 1971
 
 
        The following op codes are presently defined:
@@ -841,7 +841,7 @@ RFC 119               Network Fortran Subprograms         April 21, 1971
 
 Krilanovich                                                    [Page 15]
 
-RFC 119               Network Fortran Subprograms         April 21, 1971
+P2PSystem.RFC 119               Network Fortran Subprograms         April 21, 1971
 
 
           The calling sequence is as follows:
@@ -897,7 +897,7 @@ RFC 119               Network Fortran Subprograms         April 21, 1971
 
 Krilanovich                                                    [Page 16]
 
-RFC 119               Network Fortran Subprograms         April 21, 1971
+P2PSystem.RFC 119               Network Fortran Subprograms         April 21, 1971
 
 
    (9) READ FROM ONLINE CONSOLE
@@ -953,7 +953,7 @@ RFC 119               Network Fortran Subprograms         April 21, 1971
 
 Krilanovich                                                    [Page 17]
 
-RFC 119               Network Fortran Subprograms         April 21, 1971
+P2PSystem.RFC 119               Network Fortran Subprograms         April 21, 1971
 
 
           The calling sequence is as follows:
@@ -1009,7 +1009,7 @@ RFC 119               Network Fortran Subprograms         April 21, 1971
 
 Krilanovich                                                    [Page 18]
 
-RFC 119               Network Fortran Subprograms         April 21, 1971
+P2PSystem.RFC 119               Network Fortran Subprograms         April 21, 1971
 
 
              CALL ERASE ('cmpcd', 'delay1', 'delay2', 'time')
