@@ -32,6 +32,7 @@ public class Server implements Runnable {
     private final String[] establishMsg = {"New server-to-peer connection established with ", "New peer-to-peer connection established with "};
     private final String[] listeningMsg = {"Central server is listening on port ", "Peer server is listening on port "};
     private final String[] stoppedMsg = {"Central server stopped", "Peer server stopped"};
+    private final String[] serverSocketStoppedMsg = {"Central server's serverSocket is closed", "Peer server's serverSocket is closed"};
 
     public Server(Type type) {
         this(DEFAULT_SERVER_PORT, type);
@@ -56,7 +57,6 @@ public class Server implements Runnable {
                     }
                 } catch (IOException e) {
                     if (isStopped) {
-                        System.out.println(stoppedMsg[serverType.getValue()]);
                         break;
                     }
                     System.out.println("Error accepting new connections");
@@ -77,7 +77,7 @@ public class Server implements Runnable {
         isStopped = true;
         try {
             serverSocket.close();
-            System.out.println("Server socket is closed");
+            System.out.println(serverSocketStoppedMsg[serverType.getValue()]);
         } catch (IOException e) {
             System.out.println("Error closing server socket");
         }

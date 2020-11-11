@@ -186,7 +186,7 @@ public class RequestHandler implements Runnable {
     private void handleAdd(CentralServerData.PeerInfo currentPeer, CentralServerData.RFCIndex rfcIndex, OutputStream out) {
         centralServerData.addPeerInfo(currentPeer);
         centralServerData.addRFCIndex(rfcIndex);
-        System.out.println("After adding "+ centralServerData);
+        System.out.println("Server data updated: "+ centralServerData);
 
         List<String> RFCRecords = new ArrayList<>();
         String RFCRecord = MessageGenerator.generateRFCResponseFormat(rfcIndex.getRFCNum(), rfcIndex.getTitle(), rfcIndex.getHostname(), currentPeer.getUploadPort());
