@@ -18,7 +18,7 @@ public class CentralServerData {
         try {
             boolean find = false;
             for (PeerInfo peer : peerInfos) {
-                if (peer.hostname.equals(peerInfo.hostname)) {
+                if (peer.hostname.equals(peerInfo.hostname) && peer.getUploadPort() == peerInfo.getUploadPort()) {
                     find = true;
                     break;
                 }
@@ -32,7 +32,7 @@ public class CentralServerData {
     public void removePeerInfo(PeerInfo peerInfo) {
         w.lock();
         try {
-            peerInfos.removeIf(peer -> peer.getHostname().equals(peerInfo.getHostname()));
+            peerInfos.removeIf(peer -> peer.getHostname().equals(peerInfo.getHostname()) && peer.getUploadPort() == peerInfo.getUploadPort());
         } finally {
             w.unlock();
         }
