@@ -40,6 +40,9 @@ public class ClientPage extends BasePage implements PageView {
                     new GetRFCPage().display();
                     break;
                 case 6:
+                    new LeavePage().display();
+                    running = false;
+                    break;
             }
         }
     }
