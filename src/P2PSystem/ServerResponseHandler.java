@@ -30,7 +30,11 @@ public class ServerResponseHandler implements Runnable {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Error receiving response from central server");
+            if (socket.isClosed()) {
+                System.out.println("Socket to central server is closed");
+            } else {
+                System.out.println("Error receiving response from central server");
+            }
         }
     }
 }
