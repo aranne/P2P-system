@@ -26,12 +26,8 @@ public class JoinInPage extends BasePage implements PageView {
             switch (getChoice()) {
                 case 1:
                     P2PSystemClient.setPeerClient(new PeerClient(hostname, uploadPort));
-                    try {
-                        P2PSystemClient.getPeerClient().start();
-                        running = false;
-                    } catch (RuntimeException e) {
-                        show(e.getMessage());
-                    }
+                    P2PSystemClient.getPeerClient().start();
+                    running = false;
                     break;
                 default:
                     running = false;
