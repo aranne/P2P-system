@@ -30,8 +30,8 @@ public class Server implements Runnable {
     private CentralServerData centralServerData = null;
     private PeerServerData peerServerData = null;
     private final String[] establishMsg = {"New server-to-peer connection established with ", "New peer-to-peer connection established with "};
-    private final String[] stoppedMsg = {"Central server stopped", "Peer server stopped"};
     private final String[] listeningMsg = {"Central server is listening on port ", "Peer server is listening on port "};
+    private final String[] stoppedMsg = {"Central server stopped", "Peer server stopped"};
 
     public Server(Type type) {
         this(DEFAULT_SERVER_PORT, type);
@@ -45,26 +45,25 @@ public class Server implements Runnable {
     public void run() {
         try {
             initServer();
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
-        while (!isStopped) {
-            try {
-                Socket socket = serverSocket.accept();
-                System.out.println(establishMsg[serverType.getValue()] + socket.getLocalAddress().getHostName());
-                if (serverType == Type.CENTRAL_SERVER) {
-                    threadPool.execute(new ClientHandler(socket, centralServerData));
-                } else {
-                    threadPool.execute(new ClientHandler(socket, peerServerData));
+            while (!isStopped) {
+                try {
+                    Socket socket = serverSocket.accept();
+                    System.out.println(establishMsg[serverType.getValue()] + socket.getLocalAddress().getHostName());
+                    if (serverType == Type.CENTRAL_SERVER) {
+                        threadPool.execute(new RequestHandler(socket, centralServerData));
+                    } else {
+                        threadPool.execute(new RequestHandler(socket, peerServerData));
+                    }
+                } catch (IOException e) {
+                    if (isStopped) {
+                        System.out.println(stoppedMsg[serverType.getValue()]);
+                        break;
+                    }
+                    System.out.println("Error accepting new connections");
                 }
-            } catch (IOException e) {
-                if (isStopped) {
-                    System.out.println(stoppedMsg[serverType.getValue()]);
-                    break;
-                }
-                throw new RuntimeException("Error accepting new connections", e);
             }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
         threadPool.shutdown();
         System.out.println(stoppedMsg[serverType.getValue()]);
@@ -78,10 +77,10 @@ public class Server implements Runnable {
         isStopped = true;
         try {
             serverSocket.close();
+            System.out.println("Server socket is closed");
         } catch (IOException e) {
-            throw new RuntimeException("Error closing server socket", e);
+            System.out.println("Error closing server socket");
         }
-        System.out.println("Server socket closed");
     }
 
     public CentralServerData getCentralServerData() {
@@ -92,9 +91,9 @@ public class Server implements Runnable {
         return peerServerData;
     }
 
-    private void initServer() {
-        this.isStopped = false;
-        this.threadPool = new ThreadPoolExecutor(
+    private void initServer() throws IOException {
+        isStopped = false;
+        threadPool = new ThreadPoolExecutor(
                 CORE_POOL_SIZE,
                 MAX_POOL_SIZE,
                 KEEP_ALIVE_TIME,
@@ -102,15 +101,15 @@ public class Server implements Runnable {
                 new ArrayBlockingQueue<>(QUEUE_CAPACITY),
                 new ThreadPoolExecutor.CallerRunsPolicy());
         if (serverType == Type.CENTRAL_SERVER) {
-            this.centralServerData = new CentralServerData();
+            centralServerData = new CentralServerData();
         } else {
-            this.peerServerData = new PeerServerData();
+            peerServerData = new PeerServerData();
         }
 
         try {
-            this.serverSocket =  new ServerSocket(serverPort);
+            serverSocket =  new ServerSocket(serverPort);
         } catch (IOException e) {
-            throw new RuntimeException("Cannot open server on port " + serverPort);
+            throw new IOException("Cannot open server on port " + serverPort);
         }
         System.out.println(listeningMsg[serverType.getValue()] + serverPort);
     }
