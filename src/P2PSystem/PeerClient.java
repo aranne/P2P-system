@@ -2,7 +2,6 @@ package P2PSystem;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedHashMap;
@@ -37,7 +36,7 @@ public class PeerClient {
             this.LOCAL_HOSTNAME = socket.getLocalAddress().getHostName();
             new Thread(new ServerResponseHandler(socket)).start();  // running reading thread for response from server
         } catch (IOException e) {
-            System.out.println("Cannot connect to server at " + SERVER_HOSTNAME + " on port " + SERVER_PORT);
+            System.out.println("Cannot connect to server at " + SERVER_HOSTNAME + " on port " + SERVER_PORT + ": " + e.getMessage());
         }
     }
 
@@ -47,6 +46,7 @@ public class PeerClient {
             socket.close();                           // close connection to central server
             System.out.println("Connection to central server is closed");
             peerServer.stop();                        // stop peer server
+            System.out.println("Client left");
         } catch (IOException e) {
             System.out.println("Error closing client");
         }
