@@ -14,6 +14,7 @@ import java.util.List;
 
 public class RequestHandler implements Runnable {
 
+    private final String LOCAL_RFC_DIR = "./localRFCs/";
     private final Socket socket;
     private final Server.Type type;
     private CentralServerData centralServerData = null;
@@ -147,21 +148,17 @@ public class RequestHandler implements Runnable {
             return;
         }
         switch (method) {
-            case ADD:
+            case ADD -> {
                 currentPeer = new CentralServerData.PeerInfo(hostName, uploadPort);
                 CentralServerData.RFCIndex rfcIndex = new CentralServerData.RFCIndex(RFCNum, title, hostName);
                 handleAdd(currentPeer, rfcIndex, out);
-                break;
-            case LOOKUP:
+            }
+            case LOOKUP -> {
                 RFC rfc = new RFC(RFCNum, title);
                 handleLookUp(rfc, out);
-                break;
-            case LIST:
-                handleList(out);
-                break;
-            case GET:
-                handleGet(RFCNum, out);
-                break;
+            }
+            case LIST -> handleList(out);
+            case GET -> handleGet(RFCNum, out);
         }
     }
 
@@ -235,7 +232,7 @@ public class RequestHandler implements Runnable {
     }
 
     private void handleGet(int RFCNum, OutputStream out) {
-        Path file = Paths.get("./UploadRFCs/rfc" + RFCNum + ".txt");
+        Path file = Paths.get(LOCAL_RFC_DIR + "rfc" + RFCNum + ".txt");
         try {
             BasicFileAttributes attributes = Files.readAttributes(file, BasicFileAttributes.class);
             LinkedHashMap<String, String> headers = new LinkedHashMap<>();

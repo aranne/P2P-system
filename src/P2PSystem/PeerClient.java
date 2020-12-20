@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 
 public class PeerClient {
     private static final int DEFAULT_SERVER_PORT = 7734;
+    private final String DOWNLOAD_RFC_DIR = "./downloadedRFCs/";
     private final String SERVER_HOSTNAME;
     private final int SERVER_PORT;
     private final int UPLOAD_LOCAL_PORT;
@@ -128,7 +129,7 @@ public class PeerClient {
             OutputStream out = socket.getOutputStream();
             System.out.println("Connected to client " + hostname + " at port " + uploadingPort);
 
-            Path file = Paths.get("./DownloadRFCs/rfc" + RFCNum + ".txt");
+            Path file = Paths.get(DOWNLOAD_RFC_DIR + "rfc" + RFCNum + ".txt");
             new Thread(new PeerResponseHandler(socket, file)).start();      // get response from other peer
 
             LinkedHashMap<String, String> headers = new LinkedHashMap<>();
