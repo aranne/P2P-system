@@ -41,3 +41,6 @@ The TCP connection between a peer and central server is long-lived, and the TCP 
 * RFCs downloaded from other peers are stored under `/downloadedRFCs/`
 * The format of RFC name is `rfcxxx.txt`
 
+## License
+
+MIT
