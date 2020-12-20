@@ -20,7 +20,7 @@ The TCP connection between a peer and central server is long-lived, and the TCP 
 *  List all RFCs in P2P System
 *  Download a RFC from other peer
 
-## How to Run
+## How to run
 1. Entry point
 
    Server.jar is under `/jar/Server/`   
