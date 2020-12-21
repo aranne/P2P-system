@@ -67,29 +67,35 @@ The protocols used in P2P-CI system is a simplified version of HTTP protocol.
    ```
 * Protocol between server and peer:
    
-   query:
-   ```
+    query:
+    ```
       method <sp> RFC number <sp> version <cr> <lf> 
       header field name <sp> value <cr> <lf>
       header field name <sp> value <cr> <lf>
       ...
       <cr> <lf>
-   ```
-   response:
-   ```
+    ```
+    response:
+    ```
       version <sp> status code <sp> phrase <cr> <lf>
       <cr> <lf>
       RFC number <sp> RFC title <sp> hostname <sp> upload port number<cr><lf> 
       RFC number <sp> RFC title <sp> hostname <sp> upload port number<cr><lf>
       ...
       <cr><lf>
-   ```
+    ```
    
-   > Four status codes are supported\
-   > • 200 OK\
-   > • 400 Bad Request\
-   > • 404 Not Found\
-   > • 505 P2P-CI Version Not Supported
+  > Four methods are supported\
+  > • ADD, to add a locally available RFC to the server’s index\
+  > • LOOKUP, to find peers that have the specified RFC\
+  > • LIST, to request the whole index of RFCs from the server\
+  > • GET, to download a specific RFC from other peer
+
+  > Four status codes are supported\
+  > • 200 OK\
+  > • 400 Bad Request\
+  > • 404 Not Found\
+  > • 505 P2P-CI Version Not Supported
  
 ## License
 
