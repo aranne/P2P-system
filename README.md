@@ -41,6 +41,56 @@ The TCP connection between a peer and central server is long-lived, and the TCP 
 * RFCs downloaded from other peers are stored under `/downloadedRFCs/`
 * The format of RFC name is `rfcxxx.txt`
 
+## Protocols
+
+The protocols used in P2P-CI system is a simplified version of HTTP protocol.
+
+* Protocol among peers:
+   
+   query:
+   ```
+      method <sp> RFC number <sp> version <cr> <lf> 
+      header field name <sp> value <cr> <lf>
+      header field name <sp> value <cr> <lf>
+      ...
+      <cr> <lf>
+   ```
+   response:
+   ```
+      version <sp> status code <sp> phrase <cr> <lf> 
+      header field name <sp> value <cr> <lf>
+      header field name <sp> value <cr> <lf>
+      ...
+      <cr> <lf> 
+      data
+      <cr> <lf>
+   ```
+* Protocol between server and peer:
+   
+   query:
+   ```
+      method <sp> RFC number <sp> version <cr> <lf> 
+      header field name <sp> value <cr> <lf>
+      header field name <sp> value <cr> <lf>
+      ...
+      <cr> <lf>
+   ```
+   response:
+   ```
+      version <sp> status code <sp> phrase <cr> <lf>
+      <cr> <lf>
+      RFC number <sp> RFC title <sp> hostname <sp> upload port number<cr><lf> 
+      RFC number <sp> RFC title <sp> hostname <sp> upload port number<cr><lf>
+      ...
+      <cr><lf>
+   ```
+   
+   > Four status codes are supported\
+   > • 200 OK\
+   > • 400 Bad Request\
+   > • 404 Not Found\
+   > • 505 P2P-CI Version Not Supported
+ 
 ## License
 
 MIT
