@@ -20,20 +20,34 @@ The TCP connection between a peer and central server is long-lived, and the TCP 
 *  List all RFCs in P2P System
 *  Download a RFC from other peer
 
+## Build from source
+
+### Prerequisites
+
+#### Install Java & Maven
+
+* JDK 8+
+* Maven version 3.x
+
+### Download the source
+
+`git clone https://github.com/weiranfu/P2P-system.git`
+
+`cd P2P-system/`
+
+### Build the source
+
+`mvn clean install`
+
 ## How to run
-1. Entry point
 
-   Server.jar is under `/jar/Server/`   
+Run Server:
 
-   Client.jar is under `/jar/Client/`
+`$java -cp target/P2PSystem-1.0-SNAPSHOT.jar P2PSystem.P2PSystemServer`
 
-2. Run Server:
+Run Client:
 
-   `$java -jar Server.jar`
-
-3. Run Client:
-
-   `$java -jar Client.jar`
+`$java -cp target/P2PSystem-1.0-SNAPSHOT.jar P2PSystem.P2PSystemClient`
 
 ## RFC files
 
