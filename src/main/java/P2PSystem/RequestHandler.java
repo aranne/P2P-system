@@ -148,17 +148,21 @@ public class RequestHandler implements Runnable {
             return;
         }
         switch (method) {
-            case ADD -> {
+            case ADD:
                 currentPeer = new CentralServerData.PeerInfo(hostName, uploadPort);
                 CentralServerData.RFCIndex rfcIndex = new CentralServerData.RFCIndex(RFCNum, title, hostName);
                 handleAdd(currentPeer, rfcIndex, out);
-            }
-            case LOOKUP -> {
+                break;
+            case LOOKUP:
                 RFC rfc = new RFC(RFCNum, title);
                 handleLookUp(rfc, out);
-            }
-            case LIST -> handleList(out);
-            case GET -> handleGet(RFCNum, out);
+                break;
+            case LIST:
+                handleList(out);
+                break;
+            case GET:
+                handleGet(RFCNum, out);
+                break;
         }
     }
 
